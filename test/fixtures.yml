@@ -24,6 +24,7 @@ beanstream:
   user: username
   password: password
   secure_profile_api_key: API Access Passcode
+  recurring_api_key: API Access Passcode
   
 beanstream_interac:
   login: merchant id
@@ -31,8 +32,8 @@ beanstream_interac:
   password: password
 
 blue_pay:
-  login: X
-  password: Y
+  login: '100096218902'
+  password: 'MBUVE4G1BACMFM4W3XQHUUL2SMQRP.LW'
 
 braintree_orange:
   login: demo
@@ -43,6 +44,11 @@ braintree_blue:
   public_key: Y
   private_key: Z
   
+braintree_blue_with_processing_rules:
+  merchant_id: X
+  public_key: Y
+  private_key: Z
+
 #Username/Password given in sign up email. Not MMS credentials
 card_save:
   login: merchant_id
@@ -51,7 +57,11 @@ card_save:
 card_stream:
   login: X
   password: Y
-  
+
+certo_direct:
+  login: 1
+  password: vP6OwK3
+
 cyber_source:
   login: X
   password: Y
@@ -122,6 +132,11 @@ inspire:
   login: demo
   password: password
 
+itransact:
+  login: API_ACCESS_USERNAME
+  password: API_ACCESS_KEY
+  gateway_id: GATEWAY_ID
+
 jetpay:
   login: TESTTERMINAL
       
@@ -134,6 +149,18 @@ linkpoint:
   pem: |
     PASTE YOUR PEM FILE HERE
 
+litle:
+  currency: USD
+  merchant: 'Default Report Group'
+  merchant_id: 101
+  user: ACTIVE
+  password: MERCHANT
+  version: '8.10'
+  url: https://www.testlitle.com/sandbox/communicator/online
+  proxy_addr: smoothproxy
+  proxy_port: '8080'
+  report_group: Default Report Group
+
 # Working test credentials, no need to replace
 merchant_esolutions:
   login: "94100008043900000004"
@@ -144,6 +171,22 @@ merchant_ware:
  password: 
  name: 
 
+# Working credentials, no need to replace
+migs_purchase: # MiGS gateway for purchase mode
+  login: TESTANZTEST3
+  password: '6447E199'
+  secure_hash: '76AF3392002D202A60D0AB5F9D81653C'
+  advanced_login: noack_ama
+  advanced_password: test1234
+
+# Working credentials, no need to replace
+migs_capture: # MiGS gateway for auth/capture mode
+  login: TESTANZTEST2
+  password: '8ED23813'
+  secure_hash: '5816DF2E29819E43EA7C1F6E0DC2F1B5'
+  advanced_login: noack_ama
+  advanced_password: test1234
+
 modern_payments:
   login: login
   password: password
@@ -152,6 +195,20 @@ modern_payments:
 moneris:
   login: store1
   password: yesguy
+
+moneris_us:
+  login: monusqa002
+  password: qatoken
+
+# Working credentials, no need to replace
+nab_transact:
+  login: ABC0001
+  password: changeit
+
+# Working credentials, no need to replace
+nab_transact_card_acceptor:
+  login: XYZ0010
+  password: abcd1234
   
 netaxept:
   login: LOGIN
@@ -387,6 +444,11 @@ realex_mastercard_coms_error:
   year: '2020'
   verification_value: '123'
 
+samurai:
+  login: 'a1ebafb6da5238fb8a3ac9f6'
+  password: 'ae1aa640f6b735c4730fbb56'
+  processor_token: '5a0e1ca1e5a11a2997bbf912'
+
 sage:
   login: login
   password: password
@@ -407,8 +469,8 @@ secure_pay_tech:
   password: d557591484cb2cd12bba445aba420d2c69cd6a88
 
 secure_pay_au:
-  login:
-  password:
+  login: ABC0030
+  password: abc123
 
 #  Replace with your serial numbers for the skipjack test environment
 skipjack:
@@ -435,6 +497,12 @@ trust_commerce:
 usa_epay:
   login: 'yCaWGYQsSVR0S48B6AKMK07RQhaxHvGu'
 
+# Get credentials here: https://www.usaepay.com/developer/login
+usa_epay_advanced:
+  login: X
+  password: Y
+  software_id: Z
+
 valitor:
   login: WebsiteID
   password: SecurityNumber
@@ -448,6 +516,10 @@ viaklix:
   login: LOGIN
   password: PASSWORD
   user: USER
+
+vindicia:
+  login: LOGIN
+  password: PASSWORD
   
 # Working test credentials, no need to replace
 wirecard:
