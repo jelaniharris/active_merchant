@@ -158,6 +158,7 @@ module ActiveMerchant #:nodoc:
         add_customer_data(parameters, options)
         add_payment_source(parameters, creditcard_or_billing_id)
         add_addresses(parameters, options)
+        add_level_two_data(parameters, options)
         commit('preauth', parameters)
       end
       
@@ -172,6 +173,7 @@ module ActiveMerchant #:nodoc:
         add_customer_data(parameters, options)
         add_payment_source(parameters, creditcard_or_billing_id)
         add_addresses(parameters, options)
+        add_level_two_data(parameters, options)
         commit('sale', parameters)
       end
 
@@ -184,6 +186,7 @@ module ActiveMerchant #:nodoc:
           :transid => authorization,
         }
                                                   
+        add_level_two_data(parameters, options)
         commit('postauth', parameters)
       end
       
@@ -315,6 +318,16 @@ module ActiveMerchant #:nodoc:
         params[:cc]        = creditcard.number      
         params[:exp]       = expdate(creditcard)
         params[:cvv]       = creditcard.verification_value if creditcard.verification_value?
+      end
+      
+      def add_level_two_data(params, options)
+        params[:purchaselevel] = options[:purchaselevel] unless options[:purchaselevel].blank?
+        params[:taxidentifier] = options[:taxidentifier] unless options[:taxidentifier].blank?
+        params[:tax] = options[:tax] unless options[:tax].blank?
+        if shipping_address = options[:shipping_address]
+          params[:shipto_zip] = shipping_address[:zip] unless shipping_address[:zip].blank?
+        end
+        params[:purchaseordernum] = options[:purchaseordernum] unless options[:purchaseordernum].blank?
       end
       
       def add_order_id(params, options)
