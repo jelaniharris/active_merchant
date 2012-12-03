@@ -220,13 +220,14 @@ module ActiveMerchant #:nodoc:
       # capture it and then immediately issue a credit for the same amount 
       # which should clear the customers credit card with 48 hours according to
       # TC.
-      def void(authorization, options = {}, reversal=false)
+      def void(authorization, money = nil, options = {}, perform_void=false)
         parameters = {
+          :amount => amount(money),
           :transid => authorization,
         }
         
-        return commit('reversal', parameters) if reversal?
-        commit('void', parameters)
+        return commit('void', parameters) if perform_void?
+        commit('reversal', parameters)
       end
       
       # recurring() a TrustCommerce account that is activated for Citatdel, TrustCommerce's
