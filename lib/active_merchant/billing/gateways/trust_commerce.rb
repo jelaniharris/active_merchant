@@ -156,6 +156,7 @@ module ActiveMerchant #:nodoc:
         add_customer_data(parameters, options)
         add_payment_source(parameters, creditcard_or_billing_id)
         add_addresses(parameters, options)
+        add_level_data(parameters, options)
         commit('preauth', parameters)
       end
 
@@ -170,6 +171,7 @@ module ActiveMerchant #:nodoc:
         add_customer_data(parameters, options)
         add_payment_source(parameters, creditcard_or_billing_id)
         add_addresses(parameters, options)
+        add_level_data(parameters, options)
         commit('sale', parameters)
       end
 
@@ -182,6 +184,7 @@ module ActiveMerchant #:nodoc:
           :transid => authorization,
         }
 
+        add_level_data(parameters, options)
         commit('postauth', parameters)
       end
 
@@ -221,7 +224,7 @@ module ActiveMerchant #:nodoc:
           :transid => authorization,
         }
 
-        return commit('void', parameters) if perform_void?
+        return commit('void', parameters) if perform_void
         commit('reversal', parameters)
       end
 
@@ -327,6 +330,51 @@ module ActiveMerchant #:nodoc:
       def add_customer_data(params, options)
         params[:email] = options[:email] unless options[:email].blank?
         params[:ip] = options[:ip] unless options[:ip].blank?
+      end
+
+      def add_level_data(params, options)
+        # Append the level two data
+        add_level_two_data(params, options)
+
+        if options[:purchaselevel].present? && options[:purchaselevel] == '3'
+          add_level_three_data(params, options)
+        end
+      end
+
+      def add_level_two_data(params, options)
+        [:purchaselevel, :taxidentifier, :tax, :purchaseordernum].each do |param|
+          params[param] = options[param] unless options[param].blank?
+        end
+      end
+
+      def add_level_three_data(params, options)
+        [:vatnum, :commoditycode, :discount, :shippinghandling, :duty, :amount].each do |param|
+          params[param] = options[param] unless options[param].blank?
+        end
+
+        unless options[:line_items].blank? || options[:line_items].empty?
+          line_items = options[:line_items]
+
+          # Use the line items count for the # of items to send
+          params[:numitems] = line_items.count
+
+          # Loop through the line items and create parameters
+          # TCLink supports 999 distinct line items
+          line_items[0..998].each_with_index do |line_item, index|
+            # Params has an index that starts with 1
+            li_index = index + 1
+
+            [:productcode, :price, :discount, :quantity, :productdescription, :unitofmeasure, :tax, :shippinghandling,
+              :taxamount, :taxidentifier].each do |li_field|
+              # From the TC Documentation:
+              # Additional input fields are included to define the individual line items of the order.  The hash mark
+              # or pound sign (#) in the following field names are replaced with the list item number.  For
+              # example, if you are referring to the second item, then you would replace "#" with "2" and provide
+              # that data accordingly.
+              params["#{li_field.to_s}#{(li_index)}".to_sym] = line_item[li_field] unless line_item[li_field].blank?
+            end
+          end
+        end
       end
 
       def add_addresses(params, options)
